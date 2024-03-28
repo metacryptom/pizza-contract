@@ -12,7 +12,7 @@ contract PIZZAKeeper is Ownable {
     struct PIZZAApplicatioin {
         address PIZZAMember; // Address of member
         uint256 perBlockLimit; //  
-        uint256 transferedValue; //Total transferd yuzu 
+        uint256 transferedValue; //Total transferd 
         uint256 startBlock; // 
     } 
 
