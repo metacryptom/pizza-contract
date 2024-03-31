@@ -8,7 +8,7 @@ import "openzeppelin-latest/access/Ownable.sol";
 
 
 
-contract MemeLaunchPad is ERC20("MemeToken", "Meme"), Ownable {
+contract CHEEZLaunchPad is ERC20("CHEEZToken", "CHEEZ"), Ownable {
 
     //lanchpad const params
     uint256 constant TOTAL_SUPPLAY = 21000000 ether; // 
@@ -81,6 +81,11 @@ contract MemeLaunchPad is ERC20("MemeToken", "Meme"), Ownable {
 
 
 
+    function getShareAmounts() external view returns(uint256 adminAmounts,uint256 restAmounts) {
+        return _getShareAmounts();
+    }
+
+
 
     // admin functions
     function mintAndDistribute() external onlyOwner {
@@ -111,8 +116,8 @@ contract MemeLaunchPad is ERC20("MemeToken", "Meme"), Ownable {
     }
 
     function _getShareAmounts() internal pure returns(uint256 adminAmounts,uint256 restAmounts) {
-        adminAmounts = TOTAL_SUPPLAY / 2; 
-        restAmounts = TOTAL_SUPPLAY - adminAmounts; 
+        adminAmounts = TOTAL_SUPPLAY / 100 * 55 ;   // 0.45 + 0.1
+        restAmounts = TOTAL_SUPPLAY - adminAmounts;  //0.45
     }
 
    
