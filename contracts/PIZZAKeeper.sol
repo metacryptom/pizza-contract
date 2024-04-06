@@ -191,4 +191,13 @@ contract PIZZAKeeper is Ownable {
         return true;
     }
 
+    function queryActualPIZZAReward(uint256 _amount) public view returns (uint256) {
+        return _queryActualPIZZAReward(_amount);
+    }
+
+    function _queryActualPIZZAReward(uint256 _amount) internal view returns (uint256) {
+        uint256 actualAmount = _amount.mul(72).div(100);
+        return actualAmount;
+    }
+
 }

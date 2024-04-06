@@ -13,7 +13,8 @@ contract CHEEZLaunchPad is ERC20("CHEEZToken", "CHEEZ"), Ownable {
     //lanchpad const params
     uint256 constant TOTAL_SUPPLAY = 21000000 ether; // 
     uint256 constant MINUM_PARTICIPATE_AMOUNT =  0.001 ether;
-    uint256 constant MAX_PARTICIPATE_AMOUNT_PER_ADDRESS =  2 ether;
+    //TODO:change back to 2
+    uint256 constant MAX_PARTICIPATE_AMOUNT_PER_ADDRESS =  200 ether;
     uint256 constant MAX_TOTAL_CONTRIBUTION = 200 ether; //
 
     //lanchpad config

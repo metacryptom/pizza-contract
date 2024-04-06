@@ -18,6 +18,10 @@ interface IPIZZAKeeper {
   //PIZZAkeeper is in charge of the PIZZA
   //It control the speed of PIZZA release by rules 
   function requestForPIZZA(uint256 amount) external returns (uint256);
+
+
+  //ask the actual pizza  Got ( should minus some pizz of devs and inverstors)
+  function queryActualPIZZAReward(uint256 amount) external view returns (uint256);
 }
 
 
@@ -147,6 +151,7 @@ contract PIZZAPark is Ownable ,HalfAttenuationPIZZAReward,ReentrancyGuard{
                 getPIZZABetweenBlocks(pool.lastRewardBlock, block.number).mul(pool.allocPoint).div(
                     totalAllocPoint
                 );
+            pizzaReward = pizzakeeper.queryActualPIZZAReward(pizzaReward);
             accPIZZAPerShare = accPIZZAPerShare.add(
                 pizzaReward.mul(1e12).div(lpSupply)
             );
