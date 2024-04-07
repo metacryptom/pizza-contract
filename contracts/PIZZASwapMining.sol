@@ -72,6 +72,8 @@ contract PIZZASwapMining is Ownable ,HalfAttenuationPIZZAReward,ReentrancyGuard{
 
     //Pos start from 1, pos-1 equals pool index 
     mapping(address => uint256) public tokenPairMapPoolPos;
+    mapping(address => bool) public lpTokenRecorder;
+
 
 
 
@@ -82,7 +84,6 @@ contract PIZZASwapMining is Ownable ,HalfAttenuationPIZZAReward,ReentrancyGuard{
         require(msg.sender == routerAddr, "PIZZASwapMining: sender isn't the router");
         _;
     }
-
 
     constructor(
         IPIZZAToken _pizza,
@@ -113,11 +114,12 @@ contract PIZZASwapMining is Ownable ,HalfAttenuationPIZZAReward,ReentrancyGuard{
         address _archorTokenAddr,
         address _anotherTokenAddr,
         bool _withUpdate
-    ) public onlyOwner {
+    ) public onlyOwner  {
         if (_withUpdate) {
             massUpdatePools();
         }
         address _lpToken = UniswapV2Library.pairFor(factoryAddr, _archorTokenAddr, _anotherTokenAddr);
+        require(!lpTokenRecorder[address(_lpToken)],"Duplicated lpToken detect " );
         uint256 lastRewardBlock =
             block.number > startBlock ? block.number : startBlock;
         totalAllocPoint = totalAllocPoint.add(_allocPoint);
@@ -132,6 +134,7 @@ contract PIZZASwapMining is Ownable ,HalfAttenuationPIZZAReward,ReentrancyGuard{
             })
         );
         tokenPairMapPoolPos[_lpToken] =  poolInfo.length;
+        lpTokenRecorder[address(_lpToken)] = true;
     }
 
     // Update the given pool's PIZZA allocation point. Can only be called by the owner.

@@ -64,6 +64,12 @@ contract PIZZAPark is Ownable ,HalfAttenuationPIZZAReward,ReentrancyGuard{
     mapping(uint256 => mapping(address => UserInfo)) public userInfo;
     // Total allocation poitns. Must be the sum of all allocation points in all pools.
     uint256 public totalAllocPoint = 0;
+
+    mapping(address => bool) public lpTokenRecorder;
+
+    
+
+
     event Deposit(address indexed user, uint256 indexed pid, uint256 amount);
     event Withdraw(address indexed user, uint256 indexed pid, uint256 amount);
     event EmergencyWithdraw(
@@ -71,6 +77,12 @@ contract PIZZAPark is Ownable ,HalfAttenuationPIZZAReward,ReentrancyGuard{
         uint256 indexed pid,
         uint256 amount
     );
+
+    modifier noDuplicatedLpToken(IERC20 lpToken) {
+        require(!lpTokenRecorder[address(lpToken)],"Duplicated lpToken detect " );
+        _;
+
+    }
 
     constructor(
         IPIZZAToken _pizza,
@@ -97,7 +109,7 @@ contract PIZZAPark is Ownable ,HalfAttenuationPIZZAReward,ReentrancyGuard{
         uint256 _allocPoint,
         IERC20 _lpToken,
         bool _withUpdate
-    ) public onlyOwner {
+    ) public onlyOwner noDuplicatedLpToken(_lpToken){
         if (_withUpdate) {
             massUpdatePools();
         }
@@ -112,6 +124,7 @@ contract PIZZAPark is Ownable ,HalfAttenuationPIZZAReward,ReentrancyGuard{
                 accPIZZAPerShare: 0
             })
         );
+        lpTokenRecorder[address(_lpToken)] = true;
     }
 
     // Update the given pool's PIZZA allocation point. Can only be called by the owner.
